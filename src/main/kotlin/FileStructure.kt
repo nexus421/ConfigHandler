@@ -10,8 +10,8 @@ data class FieldSplitter(val keyValueSplitter: Char = '=', private val valueSpli
     val valueSplitterWithIgnorance = (valueSplitter.toString() + ignoreValueSplitterIfBetween.toString()).toRegex()
 }
 
-sealed class Parts(val identifier: String)
-data class Single(val headerDetail: HeaderDetail): Parts(headerDetail.header)
-class Multiple(val headerDetails: MutableList<HeaderDetail> = mutableListOf(), groupRegex: Regex): Parts(groupRegex.pattern)
+sealed class Parts<T>
+data class Single<T>(val value: T): Parts<T>()
+data class Multiple<T>(val groupedRegex: Regex, val values: List<T>): Parts<T>()
 
 data class ParseResult(val parsedLines: List<HeaderDetail>, val ignoredLines: List<String> = emptyList())
